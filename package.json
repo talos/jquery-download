@@ -1,0 +1,34 @@
+{
+    "name": "jquery-download",
+    "version": "0.1.0",
+    "title": "jQuery-download",
+    "author": {
+        "name": "John Krauss",
+        "url": "https://github.com/talos"
+    },
+    "licenses": [
+        {
+            "type": "BSD",
+            "url": "LICENSE.txt"
+        }
+    ],
+    "dependencies": {
+        "jquery": "1"
+    },
+    "description": "This plugin uses the data: uri to allow users to download arbitrary pieces of DOM, including SVGs.",
+    "keywords": [
+        "download",
+        "data"
+    ],
+    "homepage": "https://github.com/talos/jquery-download",
+    "maintainers": [
+        {
+            "name": "John Krauss",
+            "url": "https://github.com/talos"
+        }
+    ],
+    "files": [
+        "jquery-download.js",
+        "jquery-download.min.js"
+    ]
+}
