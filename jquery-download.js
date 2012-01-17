@@ -31,61 +31,78 @@
    interpreted as representing official policies, either expressed or
    implied, of John Krauss.
 **/
-(function($) {
+
+/*global define, jQuery, window*/
+
+(function (factory) {
+    "use strict";
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['jquery'], factory);
+    } else {
+        // Browser globals
+        factory(jQuery);
+    }
+}(function ($) {
+    "use strict";
     /**
        Download some text to the client computer.  Only works in
        browsers that support the 'data:' scheme.
 
        @param text The text to download.
     **/
-    var download = function(text) {
+    var download = function (text) {
         window.location.href =
             'data:application/x-download;charset=utf-8,' +
             encodeURIComponent(text);
     },
 
-    // Test to see if data URI is supported
-    // Thanks to http://weston.ruter.net/2009/05/07/detecting-support-for-data-uris
-    data = new Image(),
-    supported = false;
-    data.onload = data.onerror = function() {
-        supported = (this.width === 1 && this.height === 1) ? true : false;
-    };
-    data.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+        // Test to see if data URI is supported
+        // Thanks to http://weston.ruter.net/2009/05/07/detecting-support-for-data-uris
+        testImg = $('<img />'),
+        supported = false,
+
+        isWorking = function (evt) {
+            supported = (this.width === 1 && this.height === 1) ? true : false;
+        };
+
+    testImg.bind('load', isWorking)
+        .bind('error', isWorking)
+        .attr('src', "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==");
 
     /**
        Download the HTML of selected elements as text to the client
        computer, one file per element.  Only works in browsers that
        support the 'data:' scheme.
     **/
-    $.fn.download = function(arg) {
-        if(arg === 'support') {
+    $.fn.download = function (arg) {
+        if (arg === 'support') {
             return supported;
         } else {
             var texts = [],
-            interval;
+                interval;
 
-            $.each(this, function(i, el) {
+            $.each(this, function (i, el) {
                 var $el = $(el),
-                $container = $('<div />'),
-                text;
+                    $container = $('<div />'),
+                    text;
 
                 $el.clone().appendTo($container);
                 text = $container.html();
 
-                if(supported === true) {
+                if (supported === true) {
                     texts.push(text);
                 } else {
                     // If user supplied failCallback, call it.
-                    if($.isFunction(arg)) {
+                    if ($.isFunction(arg)) {
                         arg(text);
                     }
                 }
             });
 
             // Interval to shuffle through window.location.href
-            interval = setInterval(function() {
-                if(texts.length > 0) {
+            interval = setInterval(function () {
+                if (texts.length > 0) {
                     download(texts.pop());
                 } else {
                     clearInterval(interval);
@@ -95,4 +112,4 @@
             return this;
         }
     };
-})(jQuery);
+}));
