@@ -50,6 +50,20 @@ support the `data:` uri.
     $('#elem').download(failCallback);
 ```
 
+### Limitations
+
+It is not possible to specify a name for the downloaded file.  If at
+some point arbitrary headers are added to the `data:` uri spec, this
+would be possible using `Content-Disposition` with `filename`.
+
+There was some [discussion][] about this on the W3.org, but it has not
+led to any change in the spec.
+
+  [discussion]: http://lists.w3.org/Archives/Public/uri/2010Feb/0058.html
+
+Any browsers with limited `data:` uri support will not work, either.
+The failCallback is your friend.
+
 ### Links
 
 Fork it from
